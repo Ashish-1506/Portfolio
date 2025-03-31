@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineMax Ultimate - Movie Streaming Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0a0a0a;
+            --secondary-color: #e50914;
+            --accent-color: #ffffff;
+            --text-color: #ffffff;
+            --section-padding: 50px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+        }
+
+        topColumn {
+            background: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
+            padding: 20px 50px;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        .search-container {
+    position: relative;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+#searchInput {
+    padding: 10px 20px;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    border-radius: 25px;
+    color: white;
+    width: 250px;
+    font-size: 1rem;
+}
+
+.search-btn {
+    padding: 10px 20px;
+    background: var(--secondary-color);
+    border: none;
+    border-radius: 25px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 1rem;
+    white-space: nowrap;
+}
+
+.search-btn:hover {
+    background: #c40812;
+    transform: translateY(-1px);
+}
+
+/* Update the media query */
+@media (max-width: 768px) {
+    .search-container {
+        width: 100%;
+        flex-direction: row;
+    }
+    
+    #searchInput {
+        width: 100%;
+    }
+    
+    .search-btn {
+        width: 100%;
+        padding: 12px;
+    }
+}
+
+        .hero-section {
+            height: 80vh;
+            background: url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center/cover;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            padding: 0 50px;
+            margin-top: -80px;
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .movies-section {
+            padding: var(--section-padding) 50px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .genre-filter {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .genre-btn {
+            padding: 8px 20px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .genre-btn.active {
+            background: var(--secondary-color);
+        }
+
+        .movies-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .movie-card {
+            cursor: pointer;
+            transition: transform 0.3s;
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .movie-card img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .movie-info {
+            padding: 15px 0;
+        }
+
+        .movie-title {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .movie-details {
+            display: flex;
+            justify-content: space-between;
+            color: #808080;
+            font-size: 0.9rem;
+        }
+
+        .video-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            z-index: 2000;
+        }
+
+        .video-container {
+            position: relative;
+            width: 80%;
+            height: 80%;
+            margin: 5% auto;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        #yt-video {
+            width: 100%;
+            height: 100%;
+        }
+
+        .modal-controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-btn {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .modal-btn:hover {
+            background: var(--secondary-color);
+        }
+
+        footer {
+            background: #000;
+            padding: 50px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-section {
+            flex: 1;
+            margin-right: 30px;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        @media (max-width: 768px) {
+            topColumn {
+                padding: 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            #searchInput {
+                
+                width: 100%;
+            }
+
+            .hero-section {
+                height: 60vh;
+                padding: 20px;
+                margin-top: 0;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .movies-section {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <topColum>
+        <a href="#" class="logo">CineMax</a>
+        <nav class="nav-links">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search movies...">
+                <button class="search-btn"><i class="fas fa-search"></i> Search</button>
+            </div>
+        </nav>
+    </topColumn>
+
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Unlimited Movie Entertainment</h1>
+            <p class="hero-description">Stream blockbuster movies, exclusive originals, and more. Anywhere, anytime.</p>
+        </div>
+    </section>
+
+    <section class="movies-section" id="now-playing">
+        <h2 class="section-title"><i class="fas fa-film"></i>Now Playing</h2>
+        <div class="genre-filter" id="genreFilter"></div>
+        <div class="movies-container" id="moviesContainer"></div>
+    </section>
+
+    <div class="video-modal" id="videoModal">
+        <div class="video-container">
+            <span class="close-btn" onclick="closeVideo()">&times;</span>
+            <iframe id="yt-video" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <div class="modal-controls">
+                <button class="modal-btn" onclick="toggleFullScreen()"><i class="fas fa-expand"></i> Fullscreen</button>
+                <button class="modal-btn" onclick="closeVideo()"><i class="fas fa-times"></i> Close</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About CineMax</h3>
+                <p>Your premier destination for premium movie streaming experience.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Connect With Us</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const movies = [
+            {
+                title: "Inception",
+                genre: "Sci-Fi",
+                year: 2010,
+                rating: "PG-13",
+                image: "https://m.media-amazon.com/images/I/71thFiIUSpL._AC_UL480_FMwebp_QL65_.jpg",
+                videoId: "YoHD9XEInc0",
+                description: "A thief who enters dreams to steal secrets is tasked with planting an idea in a CEO's mind.",
+                cast: ["Leonardo DiCaprio", "Joseph Gordon-Levitt", "Ellen Page"]
+            },
+            {
+                title: "The Dark Knight",
+                genre: "Action",
+                year: 2008,
+                rating: "PG-13",
+                image: "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_.jpg",
+                videoId: "EXeTwQWrcwY",
+                description: "Batman faces the Joker in a battle for Gotham City's soul.",
+                cast: ["Christian Bale", "Heath Ledger", "Aaron Eckhart"]
+            },
+            {
+                title: "Interstellar",
+                genre: "Sci-Fi",
+                year: 2014,
+                rating: "PG-13",
+                image: "https://m.media-amazon.com/images/M/MV5BZjdkOTU3MDktN2IxOS00OGEyLWFmMjktY2FiMmZkNWIyODZiXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg",
+                videoId: "zSWdZVtXT7E",
+                description: "Astronauts travel through a wormhole in search of a new home for humanity.",
+                cast: ["Matthew McConaughey", "Anne Hathaway", "Jessica Chastain"]
+            },
+            {
+                title: "Joker",
+                genre: "Drama",
+                year: 2019,
+                rating: "R",
+                image: "https://m.media-amazon.com/images/M/MV5BNGVjNWI4ZGUtNzE0MS00YTJmLWE0ZDctN2ZiYTk2YmI3NTYyXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg",
+                videoId: "zAGVQLHvwOY",
+                description: "A failed comedian's descent into madness and crime.",
+                cast: ["Joaquin Phoenix", "Robert De Niro", "Zazie Beetz"]
+            },
+            {
+                title: "Avengers: Endgame",
+                genre: "Action",
+                year: 2019,
+                rating: "PG-13",
+                image: "https://m.media-amazon.com/images/M/MV5BMTc5MDE2ODcwNV5BMl5BanBnXkFtZTgwMzI2NzQ2NzM@._V1_.jpg",
+                videoId: "TcMBFSGVi1c",
+                description: "The Avengers attempt to reverse Thanos' snap and restore the universe.",
+                cast: ["Robert Downey Jr.", "Chris Evans", "Mark Ruffalo"]
+            },
+            {
+                title: "The Lion King",
+                genre: "Animation",
+                year: 2019,
+                rating: "PG",
+                image: "https://m.media-amazon.com/images/M/MV5BMjIwMjE1Nzc4NV5BMl5BanBnXkFtZTgwNDg4OTA1NzM@._V1_.jpg",
+                videoId: "7TavVZMewpY",
+                description: "Simba's journey to reclaim his kingdom in the African savannah.",
+                cast: ["Donald Glover", "Beyoncé", "James Earl Jones"]
+            },
+            {
+                title: "Jurassic Park",
+                genre: "Adventure",
+                year: 1993,
+                rating: "PG-13",
+                image: "https://m.media-amazon.com/images/M/MV5BMjM2MDgxMDg0Nl5BMl5BanBnXkFtZTgwNTM2OTM5NDE@._V1_.jpg",
+                videoId: "lc0UehYemQA",
+                description: "A theme park with cloned dinosaurs becomes a survival nightmare.",
+                cast: ["Sam Neill", "Laura Dern", "Jeff Goldblum"]
+            },
+            {
+                title: "Titanic",
+                genre: "Romance",
+                year: 1997,
+                rating: "PG-13",
+                image: "https://m.media-amazon.com/images/M/MV5BMDdmZGU3NDQtY2E5My00ZTliLWIzOTUtMTY4ZGI1YjdiNjk3XkEyXkFqcGdeQXVyNTA4NzY1MzY@._V1_.jpg",
+                videoId: "kVrqfYjkTdQ",
+                description: "A forbidden romance aboard the ill-fated RMS Titanic.",
+                cast: ["Leonardo DiCaprio", "Kate Winslet", "Billy Zane"]
+            },
+            {
+                title: "The Matrix",
+                genre: "Action",
+                year: 1999,
+                rating: "R",
+                image: "https://m.media-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_.jpg",
+                videoId: "vKQi3bBA1y8",
+                description: "A computer programmer discovers reality is a simulated world.",
+                cast: ["Keanu Reeves", "Laurence Fishburne", "Carrie-Anne Moss"]
+            },
+            {
+                title: "Forrest Gump",
+                genre: "Drama",
+                year: 1994,
+                rating: "PG-13",
+                image: "https://m.media-amazon.com/images/M/MV5BNWIwODRlZTUtY2U3ZS00Yzg1LWJhNzYtMmZiYmEyNmU1NjMzXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_.jpg",
+                videoId: "bLvqoHBptjg",
+                description: "A simple man witnesses and influences key historical events.",
+                cast: ["Tom Hanks", "Robin Wright", "Gary Sinise"]
+            },
+            {
+                title: "The Shining",
+                genre: "Horror",
+                year: 1980,
+                rating: "R",
+                image: "https://m.media-amazon.com/images/M/MV5BZWFlYmY2MGEtZjVkYS00YzU4LTg0YjQtYzY1ZGE3NTA5NGQxXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_.jpg",
+                videoId: "S014oGZiSdI",
+                description: "A family faces supernatural forces in an isolated hotel.",
+                cast: ["Jack Nicholson", "Shelley Duvall", "Danny Lloyd"]
+            },
+            {
+                title: "Pulp Fiction",
+                genre: "Crime",
+                year: 1994,
+                rating: "R",
+                image: "https://m.media-amazon.com/images/M/MV5BNGNhMDIzZTUtNTBlZi00MTRlLWFjM2ItYzViMjE3YzI5MjljXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_.jpg",
+                videoId: "s7EdQ4FqbhY",
+                description: "Interconnected stories of criminals in Los Angeles.",
+                cast: ["John Travolta", "Uma Thurman", "Samuel L. Jackson"]
+            },
+            {
+                title: "The Social Network",
+                genre: "Biography",
+                year: 2010,
+                rating: "PG-13",
+                image: "https://m.media-amazon.com/images/M/MV5BOGUyZDUxZjEtMmIzMC00MzlmLTg4MGItZWJmMzBhZjE0Mjc1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg",
+                videoId: "lB95KLmpLR4",
+                description: "The founding of Facebook and ensuing legal battles.",
+                cast: ["Jesse Eisenberg", "Andrew Garfield", "Justin Timberlake"]
+            },
+            {
+                title: "La La Land",
+                genre: "Musical",
+                year: 2016,
+                rating: "PG-13",
+                image: "https://m.media-amazon.com/images/M/MV5BMzUzNDM2NzM2MV5BMl5BanBnXkFtZTgwNTM3NTg4OTE@._V1_.jpg",
+                videoId: "0pdqf4P9MB8",
+                description: "A jazz pianist and actress pursue dreams in Los Angeles.",
+                cast: ["Ryan Gosling", "Emma Stone", "John Legend"]
+            },
+            {
+                title: "Get Out",
+                genre: "Horror",
+                year: 2017,
+                rating: "R",
+                image: "https://m.media-amazon.com/images/M/MV5BMjUxMDQwNjcyNl5BMl5BanBnXkFtZTgwNzcwMzc0MTI@._V1_.jpg",
+                videoId: "sRfnevzM9kQ",
+                description: "A young African-American uncovers disturbing secrets at his girlfriend's family estate.",
+                cast: ["Daniel Kaluuya", "Allison Williams", "Bradley Whitford"]
+            }
+        ];
+
+        let currentGenre = 'all';
+        let searchQuery = '';
+
+        function renderMovies() {
+            const container = document.getElementById('moviesContainer');
+            const genreFilter = document.getElementById('genreFilter');
+            
+            container.innerHTML = '';
+            genreFilter.innerHTML = '';
+
+            const genres = [...new Set(movies.map(movie => movie.genre))];
+            
+            genres.forEach(genre => {
+                const button = document.createElement('button');
+                button.className = `genre-btn ${currentGenre === genre.toLowerCase() ? 'active' : ''}`;
+                button.textContent = genre;
+                button.onclick = () => filterMoviesByGenre(genre.toLowerCase());
+                genreFilter.appendChild(button);
+            });
+
+            const allButton = document.createElement('button');
+            allButton.className = `genre-btn ${currentGenre === 'all' ? 'active' : ''}`;
+            allButton.textContent = 'All';
+            allButton.onclick = () => filterMoviesByGenre('all');
+            genreFilter.prepend(allButton);
+
+            const filteredMovies = movies.filter(movie => {
+                const matchesGenre = currentGenre === 'all' || movie.genre.toLowerCase() === currentGenre;
+                const matchesSearch = movie.title.toLowerCase().includes(searchQuery) || 
+                                   movie.genre.toLowerCase().includes(searchQuery);
+                return matchesGenre && matchesSearch;
+            });
+
+            filteredMovies.forEach(movie => {
+                const card = document.createElement('div');
+                card.className = 'movie-card';
+                card.innerHTML = `
+                    <img src="${movie.image}" alt="${movie.title}">
+                    <div class="movie-info">
+                        <div class="movie-title">${movie.title}</div>
+                        <div class="movie-details">
+                            <span>${movie.genre}</span>
+                            <span>⭐ ${movie.rating}</span>
+                        </div>
+                    </div>
+                `;
+                card.addEventListener('click', () => playMovie(movie.videoId));
+                container.appendChild(card);
+            });
+        }
+
+        function filterMoviesByGenre(genre) {
+            currentGenre = genre;
+            renderMovies();
+        }
+
+        function playMovie(videoId) {
+            const modal = document.getElementById('videoModal');
+            const iframe = document.getElementById('yt-video');
+            iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+            modal.style.display = 'block';
+        }
+
+        function closeVideo() {
+            const modal = document.getElementById('videoModal');
+            const iframe = document.getElementById('yt-video');
+            iframe.src = '';
+            modal.style.display = 'none';
+        }
+
+        function toggleFullScreen() {
+            const elem = document.querySelector('.video-container');
+            if (!document.fullscreenElement) {
+                elem.requestFullscreen().catch(err => {
+                    alert(`Error entering fullscreen: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            searchQuery = e.target.value.toLowerCase();
+            renderMovies();
+        });
+
+        document.querySelector('.search-btn').addEventListener('click', () => {
+            searchQuery = document.getElementById('searchInput').value.toLowerCase();
+            renderMovies();
+        });
+
+        // Initialize
+        renderMovies();
+
+        // Close modal on outside click
+        window.onclick = function(event) {
+            const modal = document.getElementById('videoModal');
+            if (event.target === modal) {
+                closeVideo();
+            }
+        }
+    </script>
+</body>
+</html>

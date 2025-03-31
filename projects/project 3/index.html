@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Maze Escape</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+      font-family: 'Arial', sans-serif;
+      color: #ffffff;
+      min-height: 100vh;
+      animation: backgroundShift 10s infinite alternate;
+    }
+
+    @keyframes backgroundShift {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+
+    h1 {
+      margin-top: 20px;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+      animation: glow 2s ease-in-out infinite;
+    }
+
+    @keyframes glow {
+      0%, 100% { text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+      50% { text-shadow: 0 0 15px rgba(255, 255, 255, 0.8); }
+    }
+
+    #gameContainer {
+      position: relative;
+      margin-top: 20px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    }
+
+    #maze {
+      display: grid;
+      background: #2d3436;
+      border: 3px solid #dfe6e9;
+      border-radius: 8px;
+    }
+
+    .cell {
+      width: 30px;
+      height: 30px;
+      box-sizing: border-box;
+      transition: transform 0.2s ease;
+    }
+
+    .cell:hover {
+      transform: scale(1.1);
+    }
+
+    .wall {
+      background: linear-gradient(45deg, #636e72, #2d3436);
+      border: 2px solid #b2bec3;
+      animation: wallPulse 3s infinite;
+    }
+
+    @keyframes wallPulse {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 1; }
+    }
+
+    .exit {
+      background: #00ff9f !important;
+      border-radius: 50%;
+      box-shadow: 0 0 15px #00ff9f, 0 0 25px #00ff9f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 10px;
+      color: #000;
+      animation: exitPulse 1.5s infinite;
+    }
+
+    @keyframes exitPulse {
+      0% { transform: scale(1); box-shadow: 0 0 15px #00ff9f; }
+      50% { transform: scale(1.1); box-shadow: 0 0 25px #00ff9f; }
+      100% { transform: scale(1); box-shadow: 0 0 15px #00ff9f; }
+    }
+
+    #player {
+      position: absolute;
+      background: #ff4757;
+      border-radius: 50%;
+      transition: left 0.15s ease, top 0.15s ease;
+      box-shadow: 0 0 15px #ff4757, 0 0 25px rgba(255, 71, 87, 0.5);
+      animation: playerGlow 1s infinite alternate;
+    }
+
+    @keyframes playerGlow {
+      from { box-shadow: 0 0 10px #ff4757; }
+      to { box-shadow: 0 0 20px #ff4757, 0 0 30px rgba(255, 71, 87, 0.5); }
+    }
+
+    #timer {
+      font-size: 24px;
+      margin: 20px 0;
+      padding: 10px 20px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 5px;
+      border: 1px solid #ffffff33;
+      transition: transform 0.3s ease;
+    }
+
+    #timer:hover {
+      transform: scale(1.05);
+    }
+
+    #startButton {
+      background: linear-gradient(45deg, #6c5ce7, #00cec9);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 25px;
+      cursor: pointer;
+      margin-top: 15px;
+      font-size: 18px;
+      transition: transform 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #startButton:hover {
+      transform: scale(1.1);
+      background: linear-gradient(45deg, #5a4bc7, #00bdbd);
+    }
+
+    #gameOver {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.95);
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      display: none;
+      border: 2px solid #00cec9;
+      animation: popup 0.5s ease-out;
+    }
+
+    @keyframes popup {
+      from { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+      to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    }
+
+    button {
+      background: linear-gradient(45deg, #6c5ce7, #00cec9);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      margin-top: 15px;
+      transition: transform 0.3s ease;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+      background: linear-gradient(45deg, #5a4bc7, #00bdbd);
+    }
+  </style>
+</head>
+<body>
+  <h1>Maze Escape</h1>
+  <div id="timer">Time: 0s</div>
+  <button id="startButton" onclick="startGame()">Start Game</button>
+  <div id="gameContainer">
+      <div id="maze"></div>
+  </div>
+  <div id="gameOver">
+      <h2 id="resultText"></h2>
+      <p id="timeResult"></p>
+      <button onclick="startGame()">Play Again</button>
+  </div>
+
+  <script>
+    const CELL_SIZE = 30;
+    const MAZE_LAYOUT = [
+      [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+      [1,0,0,0,1,0,0,0,0,0,0,0,0,0,1],
+      [1,1,1,0,1,0,1,1,1,0,1,1,1,0,1],
+      [1,0,0,0,0,0,1,0,0,0,0,0,1,0,1],
+      [1,0,1,1,1,1,1,0,1,1,1,0,1,0,1],
+      [1,0,0,0,0,0,1,0,0,0,1,0,0,0,1],
+      [1,1,1,1,1,1,1,1,1,0,1,1,1,1,1],
+      [1,0,0,0,1,0,0,0,1,0,0,0,0,0,1],
+      [1,0,1,0,1,1,1,0,1,1,1,1,1,0,1],
+      [1,0,1,0,0,0,1,0,0,0,0,0,1,0,1],
+      [1,0,1,1,1,0,1,1,1,0,1,0,1,0,1],
+      [1,0,0,0,1,0,0,0,1,0,1,0,0,0,1],
+      [1,1,1,0,1,1,1,0,1,0,1,1,1,0,1],
+      [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+      [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+    ];
+
+    let player = { x: 1, y: 1 };
+    let gameActive = false;
+    let time = 0;
+    let timerInterval;
+
+    function createMaze() {
+      const maze = document.getElementById('maze');
+      maze.innerHTML = '';
+      maze.style.gridTemplateColumns = `repeat(${MAZE_LAYOUT[0].length}, ${CELL_SIZE}px)`;
+
+      MAZE_LAYOUT.forEach((row, y) => {
+        row.forEach((cell, x) => {
+          const div = document.createElement('div');
+          div.className = 'cell';
+          if (cell === 1) div.classList.add('wall');
+          if (x === MAZE_LAYOUT[0].length - 2 && y === MAZE_LAYOUT.length - 2) {
+            div.classList.add('exit');
+            div.textContent = "EXIT";
+          }
+          maze.appendChild(div);
+        });
+      });
+
+      let playerElement = document.getElementById('player');
+      if (!playerElement) {
+        playerElement = document.createElement('div');
+        playerElement.id = 'player';
+        document.getElementById('maze').appendChild(playerElement);
+      }
+      updatePlayerPosition();
+    }
+
+    function updatePlayerPosition() {
+      const playerElement = document.getElementById('player');
+      playerElement.style.left = (player.x * CELL_SIZE + 2) + 'px';
+      playerElement.style.top = (player.y * CELL_SIZE + 2) + 'px';
+      playerElement.style.width = (CELL_SIZE - 4) + 'px';
+      playerElement.style.height = (CELL_SIZE - 4) + 'px';
+    }
+
+    function movePlayer(dx, dy) {
+      if (!gameActive) return;
+      const newX = player.x + dx;
+      const newY = player.y + dy;
+      
+      if (newX >= 0 && newX < MAZE_LAYOUT[0].length &&
+          newY >= 0 && newY < MAZE_LAYOUT.length &&
+          MAZE_LAYOUT[newY][newX] !== 1) {
+        player.x = newX;
+        player.y = newY;
+        updatePlayerPosition();
+        checkWin();
+      }
+    }
+
+    function checkWin() {
+      if (player.x === MAZE_LAYOUT[0].length - 2 && player.y === MAZE_LAYOUT.length - 2) {
+        endGame(true);
+      }
+    }
+
+    function endGame(won) {
+      gameActive = false;
+      clearInterval(timerInterval);
+      document.getElementById('gameOver').style.display = 'block';
+      document.getElementById('resultText').textContent = won ? 'You Escaped!' : 'Time\'s Up!';
+      document.getElementById('timeResult').textContent = `Time: ${time}s`;
+    }
+
+    function startGame() {
+      document.getElementById('startButton').style.display = 'none';
+      document.getElementById('gameOver').style.display = 'none';
+      gameActive = true;
+      time = 0;
+      player.x = 1;
+      player.y = 1;
+      document.getElementById('timer').textContent = 'Time: 0s';
+      createMaze();
+      
+      timerInterval = setInterval(() => {
+        time++;
+        document.getElementById('timer').textContent = `Time: ${time}s`;
+        if (time >= 120) endGame(false);
+      }, 1000);
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (!gameActive) return;
+      switch(e.key) {
+        case 'ArrowUp': movePlayer(0, -1); break;
+        case 'ArrowDown': movePlayer(0, 1); break;
+        case 'ArrowLeft': movePlayer(-1, 0); break;
+        case 'ArrowRight': movePlayer(1, 0); break;
+      }
+    });
+  </script>
+</body>
+</html>
