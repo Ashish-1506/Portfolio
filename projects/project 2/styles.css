@@ -1,17 +1,18 @@
 html {
     font-size: 35px;
-    background: #98BCF4;
+    background: #85f720d5;
+    background-image: url("https://img.freepik.com/free-vector/giant-tree-hilltop_1308-35589.jpg?ga=GA1.1.1652016952.1736533440&semt=ais_hybrid&w=740");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-attachment: fixed;
+
 }
 
 body {
+    
     padding: 0;
     margin: 0;
     text-align: center;
-    background-image: url("https://img.freepik.com/free-vector/giant-tree-hilltop_1308-35589.jpg?ga=GA1.1.1652016952.1736533440&semt=ais_hybrid");
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    background-position: absolute;
-
 }
 
 h1 {
@@ -22,7 +23,7 @@ h1 {
 }
 
 .score {
-    background:blue;
+    background: rgb(255, 0, 0);
     padding: 0 48px;
     line-height: 1;
     border-radius: 16px;
@@ -33,22 +34,21 @@ h1 {
 .game {
     width: 600px;
     height: 400px;
-    display:flex;
-    flex-wrap:wrap;
+    display: flex;
+    flex-wrap: wrap;
     margin: 0 auto;
-    
 }
 
-.hole{
+.hole {
     flex: 1 0 33.33%;
     overflow: hidden;
     position: relative;
 }
 
-.hole:after{
-    display:block;
+.hole:after {
+    display: block;
     background: url(dirt.png) bottom center no-repeat;
-    background-size:contain;
+    background-size: contain;
     content: '';
     width: 100%;
     height: 90px;
@@ -67,74 +67,98 @@ h1 {
     transition: all 0.4s;
 }
 
-.hole.up .mole{
-    top:0;
+.hole.up .mole {
+    top: 0;
 }
 
-button{
-    width:175px;
+button {
+    width: 175px;
     font-size: 35px;
-    height: 70px;
+    height: 120px;
     color: #fff;
-    background-color: blue;
+    background-color: rgb(0, 162, 255);
     border-radius: 10px;
     margin-left: 20px;
     margin-top: 90px;
+    padding: 10px;
 }
 
-@media (min-width: 667px) and (max-width: 1024px){
-    
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.overlay.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+.status {
+    font-size: 24px;
+    color: white;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+@media (min-width: 667px) and (max-width: 1024px) {
     h1 {
         display: none;
     }
     .score {
-    background:blue;
-    padding: 0 12px;
-    line-height: 1;
-    border-radius: 16px;
-    color: #fff;
-    font-size: 40px;
-    margin-left: 20px;
-}
-
-    .hole.up .mole{
-        top:17px;
+        background: rgb(255, 0, 89);
+        padding: 0 12px;
+        line-height: 1;
+        border-radius: 16px;
+        color: #fff;
+        font-size: 40px;
+        margin-left: 20px;
+    }
+    .hole.up .mole {
+        top: 17px;
     }
 }
 
-@media (max-width: 667px){
-
+@media (max-width: 667px) {
     .game {
         width: 667px;
         height: 300px;
-        display:flex;
-        flex-wrap:wrap;
+        display: flex;
+        flex-wrap: wrap;
         margin: 0 auto;
     }
-
-    .score{
-        width:35px;
-        font-size: 15px;
+    .score {
+        width: 35px;
+        font-size: 30px;
         height: 40px;
         color: #fff;
-        background-color: blue;
-        border-radius: 10px;
-        margin-left: 10px;
-        margin-top: 10px;
-        padding: 5px;
-        }
-
-        button{
-            margin: 10px 10px 10px 10px;
-            height: 40px;
-            width: 75px;
-            font-size: 15px;
-        }
-
-    .hole:after{
-        display:block;
+        background-color: rgb(255, 0, 0);
+        border-radius: 20px;
+        margin-left: 30px;
+        margin-top: 30px;
+        padding: 20px;
+    }
+    button {
+        margin: 10px 10px 10px 10px;
+        height: 40px;
+        width: 75px;
+        font-size: 15px;
+    }
+    .hole:after {
+        display: block;
         background: url(dirt.png) bottom center no-repeat;
-        background-size:contain;
+        background-size: contain;
         content: '';
         max-width: 70%;
         height: 60px;
@@ -142,7 +166,6 @@ button{
         z-index: 2;
         bottom: -30px;
     }
-
     .mole {
         background: url('mole.png') bottom center no-repeat;
         background-size: 60%;
@@ -152,8 +175,11 @@ button{
         height: 70%;
         transition: all 0.4s;
     }
-
-    .hole.up .mole{
-        top:50px;
+    .hole.up .mole {
+        top: 50px;
+    }
+    .status {
+        font-size: 18px;
+        margin-bottom: 10px;
     }
 }
