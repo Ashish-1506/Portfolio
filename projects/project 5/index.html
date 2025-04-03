@@ -1,526 +1,491 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Blog Platform</title>
-    <style>
-        :root {
-            --primary-color: #2d3436;
-            --secondary-color: #0984e3;
-            --accent-color: #ff4757;
-            --light-bg: #f8f9fa;
-            --shadow: 0 5px 15px rgba(0,0,0,0.1);
-            --radius: 15px;
-            --transition: all 0.3s ease;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-        }
-
-        body {
-            background-color: var(--light-bg);
-            line-height: 1.7;
-            color: var(--primary-color);
-            font-size: 1.1rem;
-        }
-
-        header {
-            background-color: white;
-            box-shadow: var(--shadow);
-            padding: 1.5rem;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-        }
-
-        nav {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: var(--secondary-color);
-            text-decoration: none;
-            letter-spacing: -1.5px;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
-            align-items: center;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--primary-color);
-            font-weight: 600;
-            transition: var(--transition);
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-        }
-
-        .nav-links a:hover {
-            color: var(--secondary-color);
-            background-color: rgba(9, 132, 227, 0.1);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 9rem auto 4rem;
-            padding: 0 2rem;
-            display: grid;
-            grid-template-columns: 3fr 1fr;
-            gap: 3rem;
-        }
-
-        .post-form {
-            background: white;
-            padding: 3rem;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            margin-bottom: 3rem;
-        }
-
-        .post-form h2 {
-            margin-bottom: 2rem;
-            font-size: 2.2rem;
-            color: var(--primary-color);
-            border-left: 4px solid var(--secondary-color);
-            padding-left: 1rem;
-        }
-
-        .form-group {
-            margin-bottom: 2rem;
-        }
-
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
-        }
-
-        input, textarea, select {
-            width: 100%;
-            padding: 1.2rem;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            transition: var(--transition);
-        }
-
-        input:focus, textarea:focus, select:focus {
-            outline: none;
-            border-color: var(--secondary-color);
-            box-shadow: 0 0 0 3px rgba(9, 132, 227, 0.1);
-        }
-
-        button {
-            background-color: var(--secondary-color);
-            color: white;
-            border: none;
-            padding: 1.2rem 2.5rem;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1.1rem;
-            font-weight: 600;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        button:hover {
-            background-color: #0873c4;
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
-        }
-
-        .posts {
-            display: grid;
-            gap: 3rem;
-        }
-
-        .post-card {
-            background: white;
-            border-radius: var(--radius);
-            padding: 2.5rem;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .post-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
-        }
-
-        .post-card img {
-            width: 100%;
-            height: 350px;
-            object-fit: cover;
-            border-radius: 10px;
-            margin-bottom: 2rem;
-            transition: var(--transition);
-        }
-
-        .post-card:hover img {
-            transform: scale(1.02);
-        }
-
-        .post-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: #666;
-            font-size: 1rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid #f0f0f0;
-        }
-
-        .post-actions {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .delete-btn {
-            background-color: var(--accent-color);
-            padding: 0.7rem 1.5rem;
-            border-radius: 8px;
-            color: white;
-            cursor: pointer;
-            transition: var(--transition);
-            border: none;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .delete-btn:hover {
-            background-color: #ff3344;
-            transform: translateY(-2px);
-        }
-
-        .sidebar {
-            background: white;
-            padding: 2rem;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            height: fit-content;
-            position: sticky;
-            top: 120px;
-        }
-
-        .sidebar h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            color: var(--primary-color);
-            padding-bottom: 1rem;
-            border-bottom: 2px solid #f0f0f0;
-        }
-
-        .categories {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .category {
-            background: var(--light-bg);
-            padding: 0.7rem 1.5rem;
-            border-radius: 30px;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: var(--transition);
-            border: 1px solid #e0e0e0;
-        }
-
-        .category:hover {
-            background-color: var(--secondary-color);
-            color: white;
-            border-color: var(--secondary-color);
-        }
-
-        footer {
-            text-align: center;
-            padding: 3rem;
-            color: #666;
-            margin-top: 5rem;
-            background-color: white;
-            border-top: 1px solid #eee;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                grid-template-columns: 1fr;
-                margin-top: 7rem;
-                padding: 0 1.5rem;
-            }
-            
-            .post-card {
-                padding: 2rem;
-            }
-            
-            .post-card img {
-                height: 250px;
-            }
-            
-            .nav-links {
-                gap: 1.5rem;
-            }
-            
-            .logo {
-                font-size: 1.8rem;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Blog Platform</title>
+  <style>
+    :root {
+      --primary-color: #2d3436;
+      --secondary-color: #0984e3;
+      --accent-color: #ff4757;
+      --light-bg: #f8f9fa;
+      --shadow: 0 5px 15px rgba(0,0,0,0.1);
+      --radius: 15px;
+      --transition: all 0.3s ease;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+    body {
+      background-color: var(--light-bg);
+      line-height: 1.7;
+      color: var(--primary-color);
+      font-size: 1.1rem;
+    }
+    header {
+      background-color: white;
+      box-shadow: var(--shadow);
+      padding: 1.5rem;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+    }
+    nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--secondary-color);
+      text-decoration: none;
+      letter-spacing: -1.5px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--primary-color);
+      font-weight: 600;
+      transition: var(--transition);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+    }
+    .nav-links a:hover {
+      color: var(--secondary-color);
+      background-color: rgba(9, 132, 227, 0.1);
+    }
+    .container {
+      max-width: 1200px;
+      margin: 9rem auto 4rem;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: 3fr 1fr;
+      gap: 3rem;
+    }
+    .post-form {
+      background: white;
+      padding: 3rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 3rem;
+    }
+    .post-form h2 {
+      margin-bottom: 2rem;
+      font-size: 2.2rem;
+      color: var(--primary-color);
+      border-left: 4px solid var(--secondary-color);
+      padding-left: 1rem;
+    }
+    .form-group {
+      margin-bottom: 2rem;
+    }
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 1.2rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      transition: var(--transition);
+    }
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 0 3px rgba(9, 132, 227, 0.1);
+    }
+    button {
+      background-color: var(--secondary-color);
+      color: white;
+      border: none;
+      padding: 1.2rem 2.5rem;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: 600;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    button:hover {
+      background-color: #0873c4;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+    .posts {
+      display: grid;
+      gap: 3rem;
+    }
+    .post-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .post-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    }
+    .post-card img {
+      width: 100%;
+      height: 350px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 2rem;
+      transition: var(--transition);
+    }
+    .post-card:hover img {
+      transform: scale(1.02);
+    }
+    .post-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #666;
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid #f0f0f0;
+    }
+    .post-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    .delete-btn {
+      background-color: var(--accent-color);
+      padding: 0.7rem 1.5rem;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .delete-btn:hover {
+      background-color: #ff3344;
+      transform: translateY(-2px);
+    }
+    .sidebar {
+      background: white;
+      padding: 2rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      height: fit-content;
+      position: sticky;
+      top: 120px;
+    }
+    .sidebar h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--primary-color);
+      padding-bottom: 1rem;
+      border-bottom: 2px solid #f0f0f0;
+    }
+    .categories {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .category {
+      background: var(--light-bg);
+      padding: 0.7rem 1.5rem;
+      border-radius: 30px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: var(--transition);
+      border: 1px solid #e0e0e0;
+    }
+    .category:hover {
+      background-color: var(--secondary-color);
+      color: white;
+      border-color: var(--secondary-color);
+    }
+    footer {
+      text-align: center;
+      padding: 3rem;
+      color: #666;
+      margin-top: 5rem;
+      background-color: white;
+      border-top: 1px solid #eee;
+    }
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+        margin-top: 7rem;
+        padding: 0 1.5rem;
+      }
+      .post-card {
+        padding: 2rem;
+      }
+      .post-card img {
+        height: 250px;
+      }
+      .nav-links {
+        gap: 1.5rem;
+      }
+      .logo {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <a href="#" class="logo">BlogSphere</a>
-            <div class="nav-links">
-                <a href="#" onclick="showView('home')">Home</a>
-                <a href="#" onclick="showView('new-post')">New Post</a>
-                <a href="#" onclick="renderPosts()">All Posts</a>
+  <header>
+    <nav>
+      <a href="#" class="logo">BlogSphere</a>
+      <div class="nav-links">
+        <a href="#" onclick="showView('home')">Home</a>
+        <a href="#" onclick="showView('new-post')">New Post</a>
+        <a href="#" onclick="renderPosts()">All Posts</a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="container">
+    <main>
+      <div id="home-view">
+        <div class="posts" id="posts-container"></div>
+      </div>
+
+      <div id="new-post-view" style="display: none;">
+        <form class="post-form" id="post-form">
+          <h2>Create New Post</h2>
+          <div class="form-group">
+            <label>Post Title</label>
+            <input type="text" id="post-title" required placeholder="Enter post title...">
+          </div>
+          <div class="form-group">
+            <label>Category</label>
+            <select id="post-category">
+              <option value="Technology">Technology</option>
+              <option value="Lifestyle">Lifestyle</option>
+              <option value="Travel">Travel</option>
+              <option value="Food">Food</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Featured Image URL</label>
+            <input type="url" id="post-image" placeholder="https://example.com/image.jpg">
+          </div>
+          <div class="form-group">
+            <label>Post Content</label>
+            <textarea id="post-content" rows="8" required placeholder="Write your post content here..."></textarea>
+          </div>
+          <button type="submit">📝 Publish Post</button>
+        </form>
+      </div>
+    </main>
+
+    <aside class="sidebar">
+      <h3>Categories</h3>
+      <div class="categories" id="categories-list"></div>
+    </aside>
+  </div>
+
+  <footer>
+    <p>&copy; 2024 BlogSphere. All rights reserved.</p>
+  </footer>
+
+  <script>
+    localStorage.clear();
+
+    // Blog data storage
+    let posts = JSON.parse(localStorage.getItem('posts')) || [];
+
+    // Fixed sample blog posts with constant IDs and dates
+    const samplePosts = [
+      {
+        id: 1,
+        title: "The Future of Web Development",
+        category: "Technology",
+        image: "https://m.media-amazon.com/images/I/61rjMeSe6xL._SL1350_.jpg",
+        content: "Exploring the latest trends in web development, from AI integration to new framework capabilities. Discussion of modern best practices and future predictions for the industry.",
+        date: "April 3, 2025"
+      },
+      {
+        id: 2,
+        title: "Sustainable Living in Cities",
+        category: "Lifestyle",
+        image: "https://t3.ftcdn.net/jpg/10/33/36/48/240_F_1033364831_LHzXqgo0fV2wiX8UnPEPCSAP3C7wOi4O.jpg",
+        content: "Practical guide to maintaining sustainable habits in urban environments. Features zero-waste strategies, urban gardening tips, and eco-friendly commuting options.",
+        date: "April 3, 2025"
+      },
+      {
+        id: 3,
+        title: "Top Mountain Trekking Destinations",
+        category: "Travel",
+        image: "https://t4.ftcdn.net/jpg/12/23/22/43/240_F_1223224359_Qkheajkc5HDShRt9CgwNbBfERAf680Vz.jpg",
+        content: "Discover the world's most breathtaking mountain trails. Includes difficulty ratings, best seasons to visit, and essential gear recommendations for each location.",
+        date: "April 3, 2025"
+      },
+      {
+        id: 4,
+        title: "Artisan Coffee Brewing Techniques",
+        category: "Food",
+        image: "https://t4.ftcdn.net/jpg/11/08/78/55/240_F_1108785549_r5Z3OEP8wK5Pb51vNgP3okoF5FY51FW5.jpg",
+        content: "Master the art of coffee brewing with professional techniques. Covers pour-over methods, espresso extraction, and latte art fundamentals.",
+        date: "April 3, 2025"
+      },
+      {
+        id: 5,
+        title: "Smart Home Automation Guide",
+        category: "Technology",
+        image: "https://t4.ftcdn.net/jpg/10/07/11/79/240_F_1007117959_ozwH87QYfsfPI3KTUKexfR0zaARqn8zL.jpg",
+        content: "Comprehensive guide to building a smart home ecosystem. Compare different platforms, security considerations, and energy-saving automation setups.",
+        date: "April 3, 2025"
+      },
+      {
+        id: 6,
+        title: "Mindfulness Meditation Practices",
+        category: "Lifestyle",
+        image: "https://t3.ftcdn.net/jpg/10/12/96/80/240_F_1012968002_2YHcaUKqehpQ9upPkNhyWu5Pw9GkGzva.jpg",
+        content: "Step-by-step guide to developing a mindfulness practice. Includes breathing techniques, daily routines, and scientific benefits of regular meditation.",
+        date: "April 3, 2025"
+      }
+    ];
+
+    // Initialize with sample posts if localStorage is empty
+    if (posts.length === 0) {
+      posts = samplePosts;
+      localStorage.setItem('posts', JSON.stringify(posts));
+    }
+
+    // View management
+    function showView(viewId) {
+      document.querySelectorAll('main > div').forEach(view => {
+        view.style.display = 'none';
+      });
+      document.getElementById(`${viewId}-view`).style.display = 'block';
+    }
+
+    // Post deletion
+    function deletePost(postId) {
+      if (confirm('Are you sure you want to permanently delete this post?')) {
+        posts = posts.filter(post => post.id !== postId);
+        localStorage.setItem('posts', JSON.stringify(posts));
+        renderPosts();
+        renderCategories();
+      }
+    }
+
+    // Render posts with delete option
+    function renderPosts(filterCategory = null) {
+      const postsContainer = document.getElementById('posts-container');
+      postsContainer.innerHTML = '';
+
+      const filteredPosts = filterCategory 
+        ? posts.filter(post => post.category === filterCategory)
+        : posts;
+
+      if (filteredPosts.length === 0) {
+        postsContainer.innerHTML = `
+          <div class="no-posts">
+            <h3>No posts found</h3>
+            <p>Try creating a new post or selecting a different category</p>
+          </div>
+        `;
+        return;
+      }
+
+      filteredPosts.forEach(post => {
+        const postEl = document.createElement('article');
+        postEl.className = 'post-card';
+        postEl.innerHTML = `
+          ${post.image ? `<img src="${post.image}" alt="${post.title}">` : ''}
+          <h2>${post.title}</h2>
+          <div class="post-meta">
+            <div>
+              <span>📅 ${post.date}</span>
+              <span>•</span>
+              <span>🏷️ ${post.category}</span>
             </div>
-        </nav>
-    </header>
-
-    <div class="container">
-        <main>
-            <div id="home-view">
-                <div class="posts" id="posts-container"></div>
+            <div class="post-actions">
+              <button class="delete-btn" onclick="deletePost(${post.id})">
+                🗑️ Delete
+              </button>
             </div>
+          </div>
+          <p>${post.content}</p>
+        `;
+        postsContainer.appendChild(postEl);
+      });
+    }
 
-            <div id="new-post-view" style="display: none;">
-                <form class="post-form" id="post-form">
-                    <h2>Create New Post</h2>
-                    <div class="form-group">
-                        <label>Post Title</label>
-                        <input type="text" id="post-title" required placeholder="Enter post title...">
-                    </div>
-                    <div class="form-group">
-                        <label>Category</label>
-                        <select id="post-category">
-                            <option value="Technology">Technology</option>
-                            <option value="Lifestyle">Lifestyle</option>
-                            <option value="Travel">Travel</option>
-                            <option value="Food">Food</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Featured Image URL</label>
-                        <input type="url" id="post-image" placeholder="https://example.com/image.jpg">
-                    </div>
-                    <div class="form-group">
-                        <label>Post Content</label>
-                        <textarea id="post-content" rows="8" required placeholder="Write your post content here..."></textarea>
-                    </div>
-                    <button type="submit">📝 Publish Post</button>
-                </form>
-            </div>
-        </main>
+    // Category rendering
+    function renderCategories() {
+      const categories = [...new Set(posts.map(post => post.category))];
+      const categoriesList = document.getElementById('categories-list');
+      categoriesList.innerHTML = '';
 
-        <aside class="sidebar">
-            <h3>Categories</h3>
-            <div class="categories" id="categories-list"></div>
-        </aside>
-    </div>
+      categories.forEach(category => {
+        const categoryEl = document.createElement('div');
+        categoryEl.className = 'category';
+        categoryEl.textContent = category;
+        categoryEl.onclick = () => renderPosts(category);
+        categoriesList.appendChild(categoryEl);
+      });
 
-    <footer>
-        <p>&copy; 2024 BlogSphere. All rights reserved.</p>
-    </footer>
+      // Add 'All' category
+      const allCategory = document.createElement('div');
+      allCategory.className = 'category';
+      allCategory.textContent = 'All';
+      allCategory.onclick = () => renderPosts();
+      categoriesList.prepend(allCategory);
+    }
 
-    <script>
-        // Blog data storage
-        let posts = JSON.parse(localStorage.getItem('posts')) || [];
+    // Form submission
+    document.getElementById('post-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const newPost = {
+        id: Date.now(),
+        title: document.getElementById('post-title').value,
+        category: document.getElementById('post-category').value,
+        image: document.getElementById('post-image').value,
+        content: document.getElementById('post-content').value,
+        date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+      };
 
-        // Sample blog posts
-        const samplePosts = [
-            {
-                id: Date.now() + 1,
-                title: "The Future of Web Development",
-                category: "Technology",
-                image: "https://source.unsplash.com/random/800x500?coding",
-                content: "Exploring the latest trends in web development, from AI integration to new framework capabilities. Discussion of modern best practices and future predictions for the industry.",
-                date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-            },
-            {
-                id: Date.now() + 2,
-                title: "Sustainable Living in Cities",
-                category: "Lifestyle",
-                image: "https://source.unsplash.com/random/800x500?city",
-                content: "Practical guide to maintaining sustainable habits in urban environments. Features zero-waste strategies, urban gardening tips, and eco-friendly commuting options.",
-                date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-            },
-            {
-                id: Date.now() + 3,
-                title: "Top Mountain Trekking Destinations",
-                category: "Travel",
-                image: "https://source.unsplash.com/random/800x500?mountain",
-                content: "Discover the world's most breathtaking mountain trails. Includes difficulty ratings, best seasons to visit, and essential gear recommendations for each location.",
-                date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-            },
-            {
-                id: Date.now() + 4,
-                title: "Artisan Coffee Brewing Techniques",
-                category: "Food",
-                image: "https://source.unsplash.com/random/800x500?coffee",
-                content: "Master the art of coffee brewing with professional techniques. Covers pour-over methods, espresso extraction, and latte art fundamentals.",
-                date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-            },
-            {
-                id: Date.now() + 5,
-                title: "Smart Home Automation Guide",
-                category: "Technology",
-                image: "https://source.unsplash.com/random/800x500?smarthome",
-                content: "Comprehensive guide to building a smart home ecosystem. Compare different platforms, security considerations, and energy-saving automation setups.",
-                date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-            },
-            {
-                id: Date.now() + 6,
-                title: "Mindfulness Meditation Practices",
-                category: "Lifestyle",
-                image: "https://source.unsplash.com/random/800x500?meditation",
-                content: "Step-by-step guide to developing a mindfulness practice. Includes breathing techniques, daily routines, and scientific benefits of regular meditation.",
-                date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-            }
-        ];
+      posts.unshift(newPost);
+      localStorage.setItem('posts', JSON.stringify(posts));
+      renderPosts();
+      renderCategories();
+      showView('home');
+      document.getElementById('post-form').reset();
+    });
 
-        // Initialize with sample posts if empty
-        if (posts.length === 0) {
-            posts = [...samplePosts];
-            localStorage.setItem('posts', JSON.stringify(posts));
-        }
+    // Initialize blog
+    function initializeBlog() {
+      renderPosts();
+      renderCategories();
+      showView('home');
+    }
 
-        // View management
-        function showView(viewId) {
-            document.querySelectorAll('main > div').forEach(view => {
-                view.style.display = 'none';
-            });
-            document.getElementById(`${viewId}-view`).style.display = 'block';
-        }
-
-        // Post deletion
-        function deletePost(postId) {
-            if (confirm('Are you sure you want to permanently delete this post?')) {
-                posts = posts.filter(post => post.id !== postId);
-                localStorage.setItem('posts', JSON.stringify(posts));
-                renderPosts();
-                renderCategories();
-            }
-        }
-
-        // Render posts with delete option
-        function renderPosts(filterCategory = null) {
-            const postsContainer = document.getElementById('posts-container');
-            postsContainer.innerHTML = '';
-
-            const filteredPosts = filterCategory 
-                ? posts.filter(post => post.category === filterCategory)
-                : posts;
-
-            if (filteredPosts.length === 0) {
-                postsContainer.innerHTML = `
-                    <div class="no-posts">
-                        <h3>No posts found</h3>
-                        <p>Try creating a new post or selecting a different category</p>
-                    </div>
-                `;
-                return;
-            }
-
-            filteredPosts.forEach(post => {
-                const postEl = document.createElement('article');
-                postEl.className = 'post-card';
-                postEl.innerHTML = `
-                    ${post.image ? `<img src="${post.image}" alt="${post.title}">` : ''}
-                    <h2>${post.title}</h2>
-                    <div class="post-meta">
-                        <div>
-                            <span>📅 ${post.date}</span>
-                            <span>•</span>
-                            <span>🏷️ ${post.category}</span>
-                        </div>
-                        <div class="post-actions">
-                            <button class="delete-btn" onclick="deletePost(${post.id})">
-                                🗑️ Delete
-                            </button>
-                        </div>
-                    </div>
-                    <p>${post.content}</p>
-                `;
-                postsContainer.appendChild(postEl);
-            });
-        }
-
-        // Category rendering
-        function renderCategories() {
-            const categories = [...new Set(posts.map(post => post.category))];
-            const categoriesList = document.getElementById('categories-list');
-            categoriesList.innerHTML = '';
-
-            categories.forEach(category => {
-                const categoryEl = document.createElement('div');
-                categoryEl.className = 'category';
-                categoryEl.textContent = category;
-                categoryEl.onclick = () => renderPosts(category);
-                categoriesList.appendChild(categoryEl);
-            });
-
-            // Add 'All' category
-            const allCategory = document.createElement('div');
-            allCategory.className = 'category';
-            allCategory.textContent = 'All';
-            allCategory.onclick = () => renderPosts();
-            categoriesList.prepend(allCategory);
-        }
-
-        // Form submission
-        document.getElementById('post-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const newPost = {
-                id: Date.now(),
-                title: document.getElementById('post-title').value,
-                category: document.getElementById('post-category').value,
-                image: document.getElementById('post-image').value,
-                content: document.getElementById('post-content').value,
-                date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-            };
-
-            posts.unshift(newPost);
-            localStorage.setItem('posts', JSON.stringify(posts));
-            renderPosts();
-            renderCategories();
-            showView('home');
-            document.getElementById('post-form').reset();
-        });
-
-        // Initialize blog
-        function initializeBlog() {
-            renderPosts();
-            renderCategories();
-            showView('home');
-        }
-
-        window.onload = initializeBlog;
-    </script>
+    window.onload = initializeBlog;
+  </script>
 </body>
 </html>
