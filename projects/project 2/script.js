@@ -1,21 +1,23 @@
 const holes = document.querySelectorAll('.hole');
 const scoreBoard = document.querySelector('.score');
 const moles = document.querySelectorAll('.mole');
+const overlay = document.querySelector('.overlay');
+const status = document.querySelector('.status');
+const button = document.querySelector('button');
 let lastHole;
 let timeUp = false;
 let score = 0;
 
-//create a function to make a random time for mole to pop from the hole
+
 function randomTime(min, max) {
     return Math.round(Math.random() * (max - min) + min);
 }
 
-function randomHole(holes){
-    const index  = Math.floor(Math.random() * holes.length);
+function randomHole(holes) {
+    const index = Math.floor(Math.random() * holes.length);
     const hole = holes[index];
 
-    //prevent same hole from getting the same number
-    if (hole === lastHole){
+    if (hole === lastHole) {
         return randomHole(holes);
     }
     lastHole = hole;
@@ -23,31 +25,37 @@ function randomHole(holes){
 }
 
 function peep() {
-    const time = randomTime(500, 1000); //get a random time to determine how long mole should peep
-    const hole = randomHole(holes); //get the random hole from the randomHole function
-    hole.classList.add('up'); //add the CSS class so selected mole can "pop up"
+    const time = randomTime(500, 1000); 
+    const hole = randomHole(holes); 
+    hole.classList.add('up'); 
     setTimeout(() => {
-        hole.classList.remove('up'); //make the selected mole "pop down" after a random time
-        if(!timeUp) {
+        hole.classList.remove('up'); 
+        if (!timeUp) {
             peep();
         }
     }, time);
 }
 
 function startGame() {
+    holes.forEach(hole => hole.classList.remove('up'));
     scoreBoard.textContent = 0;
     timeUp = false;
     score = 0;
+    overlay.classList.remove('active');
     peep();
-    setTimeout(() => timeUp = true, 15000) //show random moles for 15 seconds
+    setTimeout(() => {
+        timeUp = true;
+        overlay.classList.add('active'); 
+        status.textContent = `Game Over! Your score: ${score}`;
+        button.textContent = 'Play Again';
+    }, 15000);
 }
 
-function wack(e){
-    if(!e.isTrusted) return; //** new thing I learned */
+function wack(e) {
+    if (!e.isTrusted || timeUp) return; 
     score++;
-    this.parentNode.classList.remove('up'); //this refers to item clicked
+    this.parentNode.classList.remove('up');
     scoreBoard.textContent = score;
 }
 
-moles.forEach(mole => mole.addEventListener('click', wack))
-
+moles.forEach(mole => mole.addEventListener('click', wack));
