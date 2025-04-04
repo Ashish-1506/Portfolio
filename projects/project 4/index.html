@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brick Breaker Game</title>
+    <audio id="startSound" src="start.mp3"></audio>
+    <audio id="paddleHit" src="paddle.mp3"></audio>
+    <audio id="brickHit" src="brick.mp3"></audio>
+    <audio id="winSound" src="win.mp3"></audio>
+    <audio id="loseSound" src="lose.mp3"></audio>
     <style>
         body {
             margin: 0;
@@ -13,6 +18,30 @@
             background: #1a1a1a;
             font-family: Arial, sans-serif;
             color: white;
+            background-image: url("./background.png");
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        .startOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            transition: opacity 0.3s ease;
+        }
+
+        .startOverlay.hidden {
+            opacity: 0;
+            pointer-events: none;
         }
 
         #gameContainer {
@@ -26,12 +55,27 @@
             background: #000;
         }
 
-        #gameInfo {
-            display: flex;
-            justify-content: space-between;
-            width: 480px;
-            margin: 10px 0;
+        h1 {
+            font-size: 35px;
+            font-weight: bold;
+            color: #ffcc00;
+            text-shadow: 3px 3px 10px rgba(255, 204, 0, 0.8);
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+        .info {
             font-size: 20px;
+            font-weight: bold;
+            padding: 10px;
+            display: flex;
+            flex-direction: row;
+            margin: 0px;
+        }
+
+        .info span {
+            color: #ff4444;
+            font-size: 24px;
         }
 
         #gameOver {
@@ -45,6 +89,7 @@
             text-align: center;
             display: none;
             border: 2px solid #fff;
+            z-index: 1000;
         }
 
         button {
@@ -56,26 +101,47 @@
             cursor: pointer;
             font-size: 16px;
             margin-top: 10px;
+            transition: transform 0.2s ease;
         }
 
         button:hover {
             background: #45a049;
+            transform: scale(1.05);
         }
 
         #startButton {
-            margin: 20px 0;
-        }
+    border-radius: 25px;
+    font-size: 50px;
+    padding: 20px 50px;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(45deg, #ff0000, #ff6600);
+    border: none;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    box-shadow: 0px 4px 10px rgba(255, 0, 0, 0.7);
+    text-shadow: 3px 3px 10px rgba(255, 255, 255, 0.8);
+}
+
+#startButton:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 6px 15px rgba(255, 69, 0, 1);
+    background: linear-gradient(45deg, #ff6600, #ff0000);
+}
+
     </style>
 </head>
 <body>
     <h1>Brick Breaker</h1>
-    <button id="startButton" onclick="startGame()">Start Game</button>
-    <div id="gameInfo">
-        <div>Score: <span id="score">0</span></div>
-        <div>Lives: <span id="lives">3</span></div>
+    <div class="startOverlay active">
+        <button id="startButton" onclick="startGame()">Start Game</button>
+    </div>
+    <div class="info">
+        <div style="background: rgba(0, 0, 0, 0.5);padding: 10px;border-radius: 10px;">Score: <span id="score">0</span></div>
+        <div style="margin-left: 120px;background: rgba(0, 0, 0, 0.5);padding: 10px;border-radius: 10px;">Lives: <span id="lives">3</span></div>
     </div>
     <div id="gameContainer">
-        <canvas id="gameCanvas" width="500" height="500"></canvas>
+        <canvas id="gameCanvas" width="830" height="500"></canvas>
     </div>
     <div id="gameOver">
         <h2 id="gameOverText"></h2>
@@ -86,6 +152,12 @@
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
+        
+        const startSound = document.getElementById('startSound');
+        const paddleSound = document.getElementById('paddleHit');
+        const brickSound = document.getElementById('brickHit');
+        const winSound = document.getElementById('winSound');
+        const loseSound = document.getElementById('loseSound');
 
         let paddle = {
             x: canvas.width / 2 - 40,
@@ -125,7 +197,7 @@
         function createBricks() {
             bricks = [];
             const rows = 5;
-            const cols = 10;  
+            const cols = 17;  
             
             for (let i = 0; i < rows; i++) {
                 for (let j = 0; j < cols; j++) {
@@ -168,6 +240,7 @@
             });
         }
 
+        
         function collisionDetection() {
             for (let i = 0; i < bricks.length; i++) {
                 const brick = bricks[i];
@@ -179,9 +252,10 @@
                         brick.status = 0;
                         score += 10;
                         document.getElementById('score').textContent = score;
+                        brickSound.currentTime = 0;
+                        brickSound.play();
                         
                         ball.speedY = -ball.speedY;
-                        
                         break;
                     }
                 }
@@ -214,6 +288,8 @@
                 ball.x > paddle.x && 
                 ball.x < paddle.x + paddle.width) {
                 ball.speedY = -Math.abs(ball.speedY);
+                paddleSound.currentTime = 0;
+                paddleSound.play();
                 
                 const hitPos = (ball.x - paddle.x) / paddle.width;
                 ball.speedX = ball.minSpeed + (hitPos - 0.5) * 2 * ball.maxSpeed;
@@ -225,6 +301,7 @@
                 
                 if (lives === 0) {
                     gameOver = true;
+                    loseSound.play();
                     document.getElementById('gameOverText').textContent = 'Game Over!';
                     document.getElementById('finalScore').textContent = score;
                     document.getElementById('gameOver').style.display = 'block';
@@ -244,6 +321,7 @@
         function checkWin() {
             if (bricks.every(brick => brick.status === 0)) {
                 gameOver = true;
+                winSound.play();
                 document.getElementById('gameOverText').textContent = 'You Win!';
                 document.getElementById('finalScore').textContent = score;
                 document.getElementById('gameOver').style.display = 'block';
@@ -268,6 +346,8 @@
         }
 
         function startGame() {
+            document.querySelector('.startOverlay').classList.add('hidden');
+            startSound.play();
             document.getElementById('startButton').style.display = 'none';
             score = 0;
             lives = 3;
@@ -306,3 +386,4 @@
     </script>
 </body>
 </html>
+
