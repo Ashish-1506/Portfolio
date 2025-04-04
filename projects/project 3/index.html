@@ -4,18 +4,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Maze Escape</title>
+  <audio id="startSound" src="./start.mp3"></audio>
+  <audio id="winSound" src="./win.mp3"></audio>
+  <audio id="loseSound" src="./lose.mp3"></audio>
   <style>
     body {
       margin: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
-      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
       font-family: 'Arial', sans-serif;
       color: #ffffff;
       min-height: 100vh;
       animation: backgroundShift 10s infinite alternate;
-    }
+      background-image: url("./background.png");
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      background-attachment: fixed;
+      }
 
     @keyframes backgroundShift {
       0% { background-position: 0% 50%; }
@@ -38,7 +44,7 @@
       margin-top: 20px;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
     }
-
+    
     #maze {
       display: grid;
       background: #2d3436;
@@ -47,8 +53,8 @@
     }
 
     .cell {
-      width: 30px;
-      height: 30px;
+      width: 37px;
+      height: 37px;
       box-sizing: border-box;
       transition: transform 0.2s ease;
     }
@@ -60,6 +66,7 @@
     .wall {
       background: linear-gradient(45deg, #636e72, #2d3436);
       border: 2px solid #b2bec3;
+      border-radius: 4px;
       animation: wallPulse 3s infinite;
     }
 
@@ -67,6 +74,7 @@
       0%, 100% { opacity: 0.8; }
       50% { opacity: 1; }
     }
+
 
     .exit {
       background: #00ff9f !important;
@@ -167,6 +175,25 @@
       transform: scale(1.1);
       background: linear-gradient(45deg, #5a4bc7, #00bdbd);
     }
+
+    audio {
+      display: none; 
+    }
+
+    .critical {
+      animation: criticalGlow 0.5s infinite alternate;
+      background: rgba(255, 0, 0, 0.3) !important;
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+    }
+
+    @keyframes criticalGlow {
+      from {
+        box-shadow: 0 0 5px rgba(255, 0, 0, 0.3);
+      }
+      to {
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
+      }
+    }
   </style>
 </head>
 <body>
@@ -183,41 +210,128 @@
   </div>
 
   <script>
-    const CELL_SIZE = 30;
-    const MAZE_LAYOUT = [
-      [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-      [1,0,0,0,1,0,0,0,0,0,0,0,0,0,1],
-      [1,1,1,0,1,0,1,1,1,0,1,1,1,0,1],
-      [1,0,0,0,0,0,1,0,0,0,0,0,1,0,1],
-      [1,0,1,1,1,1,1,0,1,1,1,0,1,0,1],
-      [1,0,0,0,0,0,1,0,0,0,1,0,0,0,1],
-      [1,1,1,1,1,1,1,1,1,0,1,1,1,1,1],
-      [1,0,0,0,1,0,0,0,1,0,0,0,0,0,1],
-      [1,0,1,0,1,1,1,0,1,1,1,1,1,0,1],
-      [1,0,1,0,0,0,1,0,0,0,0,0,1,0,1],
-      [1,0,1,1,1,0,1,1,1,0,1,0,1,0,1],
-      [1,0,0,0,1,0,0,0,1,0,1,0,0,0,1],
-      [1,1,1,0,1,1,1,0,1,0,1,1,1,0,1],
-      [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-      [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+    const CELL_SIZE = 37;
+    const MAZES = [
+      { // Original maze
+        layout: [
+          [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+          [1,0,0,0,1,0,0,0,0,0,0,0,0,0,1],
+          [1,1,1,0,1,0,1,1,1,0,1,1,1,0,1],
+          [1,0,0,0,0,0,1,0,0,0,0,0,1,0,1],
+          [1,0,1,1,1,1,1,0,1,1,1,0,1,0,1],
+          [1,0,0,0,0,0,1,0,0,0,1,0,0,0,1],
+          [1,1,1,1,1,1,1,1,1,0,1,1,1,1,1],
+          [1,0,0,0,1,0,0,0,1,0,0,0,0,0,1],
+          [1,0,1,0,1,1,1,0,1,1,1,1,1,0,1],
+          [1,0,1,0,0,0,1,0,0,0,0,0,1,0,1],
+          [1,0,1,1,1,0,1,1,1,0,1,0,1,0,1],
+          [1,0,0,0,1,0,0,0,1,0,1,0,0,0,1],
+          [1,1,1,0,1,1,1,0,1,0,1,1,1,0,1],
+          [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+          [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+        ],
+        exit: {x: 13, y: 13}
+      },
+      { // Maze 2
+        layout: [
+          [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+          [1,0,0,1,0,0,0,0,1,0,0,1,0,0,1],
+          [1,1,0,1,1,1,1,0,1,1,0,1,1,0,1],
+          [1,0,0,0,0,0,1,0,0,0,0,0,1,0,1],
+          [1,0,1,1,1,0,1,1,1,0,1,1,1,0,1],
+          [1,0,1,0,1,0,0,0,0,0,1,0,0,0,1],
+          [1,1,1,0,1,1,1,1,1,0,1,1,1,1,1],
+          [1,0,0,0,0,0,0,0,1,0,0,0,0,0,1],
+          [1,0,1,1,1,1,1,0,1,1,1,1,1,0,1],
+          [1,0,1,0,0,0,1,0,0,0,0,0,1,0,1],
+          [1,0,1,0,1,0,1,1,1,0,1,0,1,0,1],
+          [1,0,0,0,1,0,0,1,0,0,1,0,0,0,1],
+          [1,1,1,1,1,1,0,1,1,1,1,1,1,1,1],
+          [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+          [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+      ],
+      exit: {x: 13, y: 13}
+
+      },
+      { // Maze 3
+        layout: [
+          [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+          [1,0,0,0,1,0,0,0,1,0,0,0,0,0,1],
+          [1,1,1,0,1,1,1,0,1,1,1,1,1,0,1],
+          [1,0,0,0,0,0,0,0,0,0,0,0,1,0,1],
+          [1,0,1,1,1,0,1,1,1,1,1,0,1,0,1],
+          [1,0,1,0,0,0,0,0,0,0,1,0,0,0,1],
+          [1,1,1,0,1,1,1,1,1,0,1,1,1,1,1],
+          [1,0,1,0,1,0,0,0,0,0,0,0,0,0,1],
+          [1,0,1,1,1,0,1,0,1,1,1,1,1,0,1],
+          [1,0,0,0,0,0,1,0,0,0,0,0,1,1,1],
+          [1,1,1,0,1,1,1,1,1,0,1,0,1,0,1],
+          [1,0,0,0,0,0,0,0,1,0,1,1,0,0,1],
+          [1,1,1,0,1,1,1,0,1,1,1,1,1,0,1],
+          [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+          [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+        ],
+        exit: {x: 13, y: 13}
+      },
+      { // Maze 4
+        layout: [
+          [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+          [1,0,0,0,0,0,0,0,1,0,0,0,0,0,1],
+          [1,1,0,1,1,1,1,0,1,1,1,1,1,0,1],
+          [1,0,0,0,0,0,0,0,0,0,0,0,1,0,1],
+          [1,0,1,1,1,0,1,1,1,1,1,0,1,0,1],
+          [1,0,1,0,0,0,0,0,0,0,1,0,0,0,1],
+          [1,1,1,0,1,1,0,1,1,0,1,1,1,1,1],
+          [1,0,0,0,1,0,0,0,1,0,0,1,0,0,1],
+          [1,0,1,1,1,0,1,0,1,1,1,1,1,0,1],
+          [1,0,0,0,0,0,1,0,0,0,0,0,1,0,1],
+          [1,1,1,0,1,1,1,1,1,0,1,0,1,0,1],
+          [1,0,0,0,0,0,0,0,1,0,1,0,1,0,1],
+          [1,1,1,0,1,1,1,0,1,1,1,1,1,0,1],
+          [1,0,0,0,0,1,0,0,0,0,0,0,0,0,1],
+          [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+        ],
+        exit: {x: 13, y: 13}
+      },
+      { // Maze 5
+        layout: [
+          [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+          [1,0,0,0,1,0,0,0,0,0,0,0,0,0,1],
+          [1,1,1,0,1,0,1,1,1,0,1,1,1,0,1],
+          [1,0,0,0,0,0,1,0,1,0,0,0,1,0,1],
+          [1,0,1,1,1,1,1,0,1,1,1,0,1,0,1],
+          [1,0,0,0,0,0,1,0,0,0,1,0,0,0,1],
+          [1,1,1,1,1,0,1,0,1,0,1,0,1,1,1],
+          [1,0,0,0,0,0,0,0,1,0,0,0,1,0,1],
+          [1,0,1,0,1,1,1,1,1,1,1,1,1,0,1],
+          [1,0,1,0,0,0,1,0,0,0,0,0,1,0,1],
+          [1,0,1,1,1,0,1,0,1,0,1,0,1,0,1],
+          [1,0,0,0,1,0,0,0,1,0,1,0,0,0,1],
+          [1,1,1,0,1,1,1,0,1,0,1,1,1,0,1],
+          [1,0,0,0,0,0,0,0,1,0,0,0,0,0,1],
+          [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+        ],
+        exit: {x: 13, y: 13}
+      }
     ];
 
+    let currentMaze;
     let player = { x: 1, y: 1 };
     let gameActive = false;
-    let time = 0;
+    let time = 20;
     let timerInterval;
 
     function createMaze() {
       const maze = document.getElementById('maze');
       maze.innerHTML = '';
-      maze.style.gridTemplateColumns = `repeat(${MAZE_LAYOUT[0].length}, ${CELL_SIZE}px)`;
+      maze.style.gridTemplateColumns = `repeat(${currentMaze.layout[0].length}, ${CELL_SIZE}px)`;
 
-      MAZE_LAYOUT.forEach((row, y) => {
+      currentMaze.layout.forEach((row, y) => {
         row.forEach((cell, x) => {
           const div = document.createElement('div');
           div.className = 'cell';
           if (cell === 1) div.classList.add('wall');
-          if (x === MAZE_LAYOUT[0].length - 2 && y === MAZE_LAYOUT.length - 2) {
+          if (x === currentMaze.exit.x && y === currentMaze.exit.y) {
             div.classList.add('exit');
             div.textContent = "EXIT";
           }
@@ -229,7 +343,7 @@
       if (!playerElement) {
         playerElement = document.createElement('div');
         playerElement.id = 'player';
-        document.getElementById('maze').appendChild(playerElement);
+        maze.appendChild(playerElement);
       }
       updatePlayerPosition();
     }
@@ -247,9 +361,9 @@
       const newX = player.x + dx;
       const newY = player.y + dy;
       
-      if (newX >= 0 && newX < MAZE_LAYOUT[0].length &&
-          newY >= 0 && newY < MAZE_LAYOUT.length &&
-          MAZE_LAYOUT[newY][newX] !== 1) {
+      if (newX >= 0 && newX < currentMaze.layout[0].length &&
+          newY >= 0 && newY < currentMaze.layout.length &&
+          currentMaze.layout[newY][newX] !== 1) {
         player.x = newX;
         player.y = newY;
         updatePlayerPosition();
@@ -258,7 +372,7 @@
     }
 
     function checkWin() {
-      if (player.x === MAZE_LAYOUT[0].length - 2 && player.y === MAZE_LAYOUT.length - 2) {
+      if (player.x === currentMaze.exit.x && player.y === currentMaze.exit.y) {
         endGame(true);
       }
     }
@@ -267,26 +381,53 @@
       gameActive = false;
       clearInterval(timerInterval);
       document.getElementById('gameOver').style.display = 'block';
-      document.getElementById('resultText').textContent = won ? 'You Escaped!' : 'Time\'s Up!';
-      document.getElementById('timeResult').textContent = `Time: ${time}s`;
+      document.getElementById('timer').classList.remove('critical');
+      
+      if (won) {
+        document.getElementById('winSound').play();
+        document.getElementById('resultText').textContent = 'You Escaped!';
+      } else {
+        document.getElementById('loseSound').play();
+        document.getElementById('resultText').textContent = 'Time\'s Up!';
+      }
+      
+      document.getElementById('timeResult').textContent = `Time Remaining: ${time}s`;
     }
 
     function startGame() {
+      currentMaze = MAZES[Math.floor(Math.random() * MAZES.length)];
+      player.x = 1;
+      player.y = 1;
+      
+      document.getElementById('startSound').play();
       document.getElementById('startButton').style.display = 'none';
       document.getElementById('gameOver').style.display = 'none';
       gameActive = true;
-      time = 0;
-      player.x = 1;
-      player.y = 1;
-      document.getElementById('timer').textContent = 'Time: 0s';
+      time = 20; 
+      
+     
+      const timerElement = document.getElementById('timer');
+      timerElement.textContent = `Time: ${time}s`;
+      timerElement.classList.remove('critical');
+
       createMaze();
       
       timerInterval = setInterval(() => {
-        time++;
-        document.getElementById('timer').textContent = `Time: ${time}s`;
-        if (time >= 20) endGame(false);
+        time--; 
+        timerElement.textContent = `Time: ${time}s`;
+        
+        if (time < 5) {
+          timerElement.classList.add('critical');
+        } else {
+          timerElement.classList.remove('critical');
+        }
+
+        if (time <= 0) {
+          endGame(false);
+        }
       }, 1000);
     }
+
 
     document.addEventListener('keydown', (e) => {
       if (!gameActive) return;
@@ -300,3 +441,5 @@
   </script>
 </body>
 </html>
+
+
