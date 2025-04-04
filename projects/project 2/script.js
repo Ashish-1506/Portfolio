@@ -1,3 +1,4 @@
+const hitSound = new Audio('hit.mp3');
 const holes = document.querySelectorAll('.hole');
 const scoreBoard = document.querySelector('.score');
 const moles = document.querySelectorAll('.mole');
@@ -52,7 +53,9 @@ function startGame() {
 }
 
 function wack(e) {
-    if (!e.isTrusted || timeUp) return; 
+    if (!e.isTrusted || timeUp) return;
+    const hitSound = new Audio('hit.mp3');
+    hitSound.play();
     score++;
     this.parentNode.classList.remove('up');
     scoreBoard.textContent = score;
