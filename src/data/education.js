@@ -1,6 +1,6 @@
 const education = {
   degree: 'B.Tech',
-  field: 'Computer Science Engineering (Cyber Physical Systems)',
+  field: 'Computer Science Engineering (Cyber-Physical Systems)',
   institution: 'Vellore Institute of Technology, Chennai',
   expectedGraduation: 'July 2027',
   cgpa: '9.03/10',

@@ -53,8 +53,8 @@ function ProjectModal({ project, onClose, triggerRef }) {
             </ul>
             <div className="mt-7 flex flex-wrap gap-2">{project.tech.map((technology) => <Chip key={technology}>{technology}</Chip>)}</div>
             <div className="mt-8 flex flex-wrap gap-3">
-              {isUsableLink(project.github) && <a href={project.github} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm text-muted transition-colors hover:border-primary hover:text-text"><FiGithub aria-hidden="true" />GitHub</a>}
-              {isUsableLink(project.demo) && <a href={project.demo} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-primary to-secondary px-4 py-2.5 text-sm font-semibold text-white"><FiArrowUpRight aria-hidden="true" />Live Demo</a>}
+              {isUsableLink(project.github) && <a href={project.github} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm text-muted transition-colors hover:border-primary hover:text-text"><FiGithub aria-hidden="true" />GitHub</a>}
+              {isUsableLink(project.demo) && <a href={project.demo} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-primary to-secondary px-4 py-2.5 text-sm font-semibold text-white"><FiArrowUpRight aria-hidden="true" />Live Demo</a>}
             </div>
           </motion.div>
         </motion.div>

@@ -1,7 +1,7 @@
 const profile = {
   name: 'Ashish Ranjan',
-  siteUrl: 'https://github.com/Ashish-1506/Portfolio',
-  roles: ['Full-Stack Developer', 'AI / ML Engineer', 'Backend Engineer', 'Published Researcher'],
+  siteUrl: 'https://Ashish-1506.github.io/Portfolio/',
+  roles: ['Full-Stack Developer', 'AI/ML Engineer', 'Backend Engineer', 'Published Researcher'],
   tagline: 'Building reliable software and intelligent systems across full-stack, backend, and AI/ML engineering.',
   contact: {
     intro: 'Whether you are building reliable software, exploring AI/ML applications, or looking for research collaboration, I would be glad to hear from you.',
@@ -26,7 +26,7 @@ const profile = {
     linkedin: 'https://www.linkedin.com/in/ashish-ranjan-966986289/',
     email: 'mailto:ashish.11ranjan01@gmail.com',
   },
-  resumeUrl: 'TODO',
+  resumeUrl: 'resume.pdf',
 }
 
 export default profile

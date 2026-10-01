@@ -68,8 +68,8 @@ function ProjectCard({ project, onViewDetails }) {
             {remainingTech > 0 && <Chip>+{remainingTech}</Chip>}
           </div>
           <div className="mt-auto flex items-center gap-2 pt-6">
-            {isUsableLink(project.github) && <a href={project.github} target="_blank" rel="noreferrer" aria-label={`${project.title} GitHub repository`} className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-border text-muted transition-colors hover:border-primary hover:text-accent"><FiGithub aria-hidden="true" /></a>}
-            {isUsableLink(project.demo) && <a href={project.demo} target="_blank" rel="noreferrer" aria-label={`${project.title} live demo`} className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-border text-muted transition-colors hover:border-primary hover:text-accent"><FiArrowUpRight aria-hidden="true" /></a>}
+            {isUsableLink(project.github) && <a href={project.github} target="_blank" rel="noopener noreferrer" aria-label={`${project.title} GitHub repository`} className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-border text-muted transition-colors hover:border-primary hover:text-accent"><FiGithub aria-hidden="true" /></a>}
+            {isUsableLink(project.demo) && <a href={project.demo} target="_blank" rel="noopener noreferrer" aria-label={`${project.title} live demo`} className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-border text-muted transition-colors hover:border-primary hover:text-accent"><FiArrowUpRight aria-hidden="true" /></a>}
             <button type="button" onClick={(event) => onViewDetails(project, event.currentTarget)} className="ml-auto inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-primary to-secondary px-3 py-2.5 text-xs font-semibold text-white transition-transform hover:-translate-y-0.5">View Details <FiArrowUpRight aria-hidden="true" /></button>
           </div>
         </div>

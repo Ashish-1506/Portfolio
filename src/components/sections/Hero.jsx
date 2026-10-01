@@ -96,7 +96,7 @@ function Hero() {
           <Reveal delay={0.5}>
             <div className="mt-7 flex items-center gap-3">
               {socialLinks.map(({ label, href, icon: Icon }) => (
-                <a key={label} href={href} aria-label={label} title={label} target={href.startsWith('http') ? '_blank' : undefined} rel={href.startsWith('http') ? 'noreferrer' : undefined} className="glass inline-flex h-11 w-11 items-center justify-center rounded-xl text-muted transition-all duration-300 hover:-translate-y-1 hover:border-primary hover:text-accent">
+                  <a key={label} href={href} aria-label={label} title={label} target={href.startsWith('http') ? '_blank' : undefined} rel={href.startsWith('http') ? 'noopener noreferrer' : undefined} className="glass inline-flex h-11 w-11 items-center justify-center rounded-xl text-muted transition-all duration-300 hover:-translate-y-1 hover:border-primary hover:text-accent">
                   <Icon aria-hidden="true" />
                 </a>
               ))}

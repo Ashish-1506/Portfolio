@@ -35,7 +35,7 @@ function Footer() {
                 href={href}
                 aria-label={label}
                 target={href.startsWith('http') ? '_blank' : undefined}
-                rel={href.startsWith('http') ? 'noreferrer' : undefined}
+                rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
                 className="glass inline-flex h-11 w-11 items-center justify-center rounded-xl text-muted transition-all duration-300 hover:-translate-y-1 hover:border-primary hover:text-accent"
               >
                 <Icon aria-hidden="true" />

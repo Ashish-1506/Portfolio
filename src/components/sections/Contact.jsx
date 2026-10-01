@@ -133,7 +133,7 @@ function ContactCard({ icon: Icon, label, value, href, external, onCopy, copied 
   return (
     <div className="glass flex items-center gap-3 rounded-2xl p-4">
       <Icon aria-hidden="true" className="shrink-0 text-accent" />
-      <div className="min-w-0 flex-1"><p className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted">{label}</p>{href ? <a href={href} target={external ? '_blank' : undefined} rel={external ? 'noreferrer' : undefined} className="mt-1 inline-flex min-h-11 max-w-full items-center truncate text-sm text-text hover:text-accent">{value}</a> : <p className="mt-1 text-sm text-text">{value}</p>}</div>
+      <div className="min-w-0 flex-1"><p className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted">{label}</p>{href ? <a href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener noreferrer' : undefined} className="mt-1 inline-flex min-h-11 max-w-full items-center truncate text-sm text-text hover:text-accent">{value}</a> : <p className="mt-1 text-sm text-text">{value}</p>}</div>
       {onCopy && <button type="button" onClick={onCopy} aria-label="Copy email address" className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface-2 hover:text-accent">{copied ? <FiCheck aria-hidden="true" /> : <FiCopy aria-hidden="true" />}</button>}
     </div>
   )

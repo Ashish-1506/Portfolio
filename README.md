@@ -1,48 +1,104 @@
 # Ashish Ranjan Portfolio
 
-Personal developer portfolio built with React 18, Vite, Tailwind CSS v4, Framer Motion, and EmailJS.
+Personal developer portfolio for Ashish Ranjan, a Computer Science undergraduate focused on full-stack development, backend engineering, AI/ML applications, and biomedical AI research.
 
-## Commands
+**Live demo:** [Ashish Ranjan Portfolio](https://Ashish-1506.github.io/Portfolio/)
+
+## Key Features
+
+- Animated single-page presentation with reduced-motion support.
+- Dark/light theme switching with persisted preference.
+- Responsive layouts for mobile, tablet, and desktop.
+- Accessible semantic structure, keyboard navigation, focus management, and command palette.
+- SEO metadata, Open Graph preview artwork, sitemap, robots file, and web manifest.
+- Contact form with EmailJS and a mailto fallback when local credentials are unavailable.
+- GitHub Actions CI/CD deployment to GitHub Pages.
+
+## Tech Stack
+
+| Area | Technology |
+| --- | --- |
+| UI | React 18, JSX, Vite |
+| Styling | Tailwind CSS v4 |
+| Motion | Framer Motion |
+| Icons | react-icons |
+| Contact | @emailjs/browser |
+| Fonts | Inter, Space Grotesk, JetBrains Mono |
+| Quality | Oxlint, Vite production build |
+| Deployment | GitHub Actions, GitHub Pages |
+
+## Project Structure
+
+```text
+src/
+  components/       Reusable layout, section, and UI components
+  context/          Theme context and provider
+  data/             Editable portfolio content
+  hooks/            Shared React hooks
+  utils/            Link and icon helpers
+public/
+  assets/           Profile and project images
+  resume.pdf        Downloadable resume
+.github/workflows/  GitHub Pages deployment workflow
+```
+
+## Getting Started
+
+Requirements: Node.js 20 or newer and npm.
 
 ```bash
-npm install
+npm ci
 npm run dev
-npm run build
+```
+
+Available checks:
+
+```bash
 npm run lint
+npm run build
 npm run preview
 ```
 
-Set `VITE_BASE` when the site is deployed under a GitHub Pages repository path. EmailJS values belong in a local `.env` file based on `.env.example`.
+## Editing Portfolio Content
 
-## EmailJS setup
+Update the modules in `src/data/` for profile details, navigation, skills, projects, experience, education, certifications, publications, and about-page content. Keep components focused on presentation and do not hardcode personal facts in them.
 
-Copy `.env.example` to `.env`, then fill in the EmailJS service ID, template ID, and public key. The EmailJS template must accept `from_name`, `from_email`, `subject`, and `message` variables. Keep `.env` local and never commit its values.
+Place the resume at `public/resume.pdf`. Public images belong in `public/assets/images/` and should be referenced with the Vite base path for GitHub Pages compatibility.
 
-The social preview artwork is provided as `public/og-image.svg` at 1200x630. Export it to PNG with any SVG-capable image editor or with ImageMagick: `magick public/og-image.svg public/og-image.png`, then update the `og:image` and `twitter:image` URLs if the PNG is published.
+## Environment Variables
+
+Copy `.env.example` to `.env` for local EmailJS testing and fill in the values from the EmailJS dashboard:
+
+```text
+VITE_EMAILJS_SERVICE_ID=
+VITE_EMAILJS_TEMPLATE_ID=
+VITE_EMAILJS_PUBLIC_KEY=
+```
+
+Never commit `.env` or real credentials. The same three values must be added as GitHub repository Actions secrets for production contact-form delivery.
 
 ## Deployment
 
-GitHub Pages deployment is automated by [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml). It builds with `VITE_BASE=/Portfolio/`, publishes the `dist` directory, and deploys on pushes to `main` or manual workflow runs. Public assets use the Vite base path, so resume downloads, images, fonts, favicon files, the manifest, and the SPA fallback work at the repository sub-path.
+The workflow in `.github/workflows/deploy.yml` deploys the `main` branch to GitHub Pages. It builds with `VITE_BASE=/Portfolio/`, creates the SPA `404.html` fallback, and publishes `dist` through the official Pages actions.
 
-### First-time setup
+To configure a new repository:
 
-1. Create an empty public repository named `Portfolio` under the `Ashish-1506` GitHub account. Do not add a README, `.gitignore`, or license during creation.
-2. In the local project terminal, run:
+1. Create a public repository named `Portfolio` under `Ashish-1506`.
+2. Push the `main` branch to `https://github.com/Ashish-1506/Portfolio.git`.
+3. Set `Settings -> Pages -> Source` to `GitHub Actions`.
+4. Add `VITE_EMAILJS_SERVICE_ID`, `VITE_EMAILJS_TEMPLATE_ID`, and `VITE_EMAILJS_PUBLIC_KEY` under `Settings -> Secrets and variables -> Actions`.
 
-	```bash
-	cd C:\Users\ASHISH\Desktop\Portfolio
-	git init -b main
-	git add .
-	git commit -m "Initial portfolio"
-	git remote add origin https://github.com/Ashish-1506/Portfolio.git
-	git push -u origin main
-	```
+## Screenshots
 
-3. In GitHub, open `Portfolio` -> `Settings` -> `Pages`, set `Source` to `GitHub Actions`, and save.
-4. In `Portfolio` -> `Settings` -> `Secrets and variables` -> `Actions`, select `New repository secret` and add:
-	- `VITE_EMAILJS_SERVICE_ID`
-	- `VITE_EMAILJS_TEMPLATE_ID`
-	- `VITE_EMAILJS_PUBLIC_KEY`
-5. Open the `Actions` tab and wait for `Deploy to GitHub Pages` to complete. The live URL is:
+Add recruiter-facing screenshots at these paths:
 
-	`https://Ashish-1506.github.io/Portfolio/`
+```text
+docs/screenshots/desktop.png       Desktop layout
+docs/screenshots/mobile.png        Mobile layout
+docs/screenshots/dark.png          Dark theme
+docs/screenshots/light.png         Light theme
+```
+
+## License and Contact
+
+The code is released under the MIT License. See [LICENSE](LICENSE). For collaboration or professional opportunities, use the contact form on the portfolio or email Ashish Ranjan through the address published in the site data.

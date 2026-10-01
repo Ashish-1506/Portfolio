@@ -61,7 +61,7 @@ function Projects() {
       <Reveal delay={0.15}>
         <div className="mt-10 flex flex-wrap items-center justify-center gap-3 text-sm text-muted">
           <span>More projects and code on my GitHub</span>
-          <a href={profile.socials.github} target="_blank" rel="noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-border px-3 py-2 text-text transition-colors hover:border-primary hover:text-accent"><FiGithub aria-hidden="true" />GitHub</a>
+          <a href={profile.socials.github} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-border px-3 py-2 text-text transition-colors hover:border-primary hover:text-accent"><FiGithub aria-hidden="true" />GitHub</a>
         </div>
       </Reveal>
 

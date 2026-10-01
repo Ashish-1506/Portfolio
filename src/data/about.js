@@ -39,7 +39,7 @@ const about = {
   whatDoTitle: 'What I Do',
   whatDo: [
     { title: 'Full-Stack Development', description: 'React, Node.js, FastAPI, REST, WebSockets', iconKey: 'full-stack' },
-    { title: 'AI / ML & LLM Applications', description: 'PyTorch, LangChain, RAG, FAISS, Whisper', iconKey: 'ai-ml' },
+    { title: 'AI/ML & LLM Applications', description: 'PyTorch, LangChain, RAG, FAISS, Whisper', iconKey: 'ai-ml' },
     { title: 'Backend & Distributed Systems', description: 'Docker, microservices, OpenTelemetry, Prometheus, chaos testing', iconKey: 'backend' },
   ],
   educationLabels: {
