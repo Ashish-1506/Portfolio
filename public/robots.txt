@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://github.com/Ashish-1506/Portfolio/sitemap.xml

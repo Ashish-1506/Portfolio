@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Ashish Ranjan | Full-Stack &amp; AI/ML Engineer</title>
+  <desc id="desc">Personal developer portfolio for Ashish Ranjan.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0B0F1A"/><stop offset="0.55" stop-color="#121829"/><stop offset="1" stop-color="#1a1235"/></linearGradient>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#6366F1"/><stop offset="0.5" stop-color="#A855F7"/><stop offset="1" stop-color="#22D3EE"/></linearGradient>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M48 0H0V48" fill="none" stroke="#94A3B8" stroke-opacity=".08"/></pattern>
+    <filter id="blur"><feGaussianBlur stdDeviation="46"/></filter>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <circle cx="1020" cy="100" r="180" fill="#6366F1" fill-opacity=".24" filter="url(#blur)"/>
+  <circle cx="180" cy="560" r="180" fill="#22D3EE" fill-opacity=".14" filter="url(#blur)"/>
+  <rect x="88" y="88" width="104" height="104" rx="28" fill="url(#brand)"/>
+  <text x="140" y="158" fill="white" font-family="Arial, sans-serif" font-size="48" font-weight="700" text-anchor="middle">AR</text>
+  <text x="88" y="292" fill="#E5E7EB" font-family="Arial, sans-serif" font-size="64" font-weight="700">Ashish Ranjan</text>
+  <text x="88" y="362" fill="url(#brand)" font-family="Arial, sans-serif" font-size="32" font-weight="600">Full-Stack Developer  ·  AI / ML Engineer</text>
+  <text x="88" y="434" fill="#94A3B8" font-family="Arial, sans-serif" font-size="24">Backend Engineer  ·  Published Researcher</text>
+  <text x="88" y="548" fill="#64748B" font-family="monospace" font-size="20">https://github.com/Ashish-1506/Portfolio</text>
+</svg>

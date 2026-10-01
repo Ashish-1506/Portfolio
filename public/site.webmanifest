@@ -1,0 +1,12 @@
+{
+  "name": "Ashish Ranjan | Full-Stack & AI/ML Engineer",
+  "short_name": "Ashish Ranjan",
+  "start_url": "./",
+  "display": "standalone",
+  "theme_color": "#0B0F1A",
+  "background_color": "#0B0F1A",
+  "icons": [
+    { "src": "./favicon.svg", "sizes": "64x64", "type": "image/svg+xml", "purpose": "any maskable" },
+    { "src": "./apple-touch-icon.svg", "sizes": "180x180", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
