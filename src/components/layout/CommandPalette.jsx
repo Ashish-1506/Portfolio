@@ -1,6 +1,6 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { useEffect, useId, useRef, useState } from 'react'
-import { FiBookOpen, FiCommand, FiCopy, FiDownload, FiExternalLink, FiFolder, FiGrid, FiHome, FiLinkedin, FiMail, FiMoon, FiSun, FiUser } from 'react-icons/fi'
+import { FiBookOpen, FiCommand, FiCopy, FiExternalLink, FiFolder, FiGrid, FiHome, FiLinkedin, FiMail, FiMoon, FiSun, FiUser } from 'react-icons/fi'
 import projects from '../../data/projects'
 import publications from '../../data/publications'
 import navLinks from '../../data/navLinks'
@@ -53,7 +53,7 @@ function CommandPalette({ open, onClose }) {
 
   const commands = [
     ...navLinks.map(({ id, label }) => ({ id: `section-${id}`, label: `Go to ${label}`, group: 'Navigate', icon: sectionIcons[id] || FiGrid, action: () => scrollToSection(id) })),
-    { id: 'download-resume', label: 'Download Resume', group: 'Actions', icon: FiDownload, action: () => window.location.assign(baseResumePath) },
+    { id: 'view-resume', label: 'View Resume', group: 'Actions', icon: FiExternalLink, action: () => window.open(baseResumePath, '_blank', 'noopener,noreferrer') },
     { id: 'open-github', label: 'Open GitHub', group: 'Actions', icon: FiExternalLink, action: () => window.open(profile.socials.github, '_blank', 'noopener,noreferrer') },
     { id: 'open-linkedin', label: 'Open LinkedIn', group: 'Actions', icon: FiLinkedin, action: () => window.open(profile.socials.linkedin, '_blank', 'noopener,noreferrer') },
     { id: 'copy-email', label: 'Copy Email', group: 'Actions', icon: FiCopy, action: copyEmail },

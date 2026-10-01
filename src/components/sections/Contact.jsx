@@ -100,7 +100,7 @@ function Contact() {
               {profile.showPhone && <ContactCard icon={FiMail} label="Phone" value={profile.phone} href={`tel:${profile.phone}`} />}
             </div>
             <div className="mt-7 flex flex-wrap gap-2">{profile.contact.openTo.map((role) => <Chip key={role}>{role}</Chip>)}</div>
-            <Button as="a" href={`${import.meta.env.BASE_URL}resume.pdf`} download variant="secondary" className="mt-7">Download Resume</Button>
+            <Button as="a" href={`${import.meta.env.BASE_URL}resume.pdf`} target="_blank" rel="noopener noreferrer" variant="secondary" className="mt-7">View Resume</Button>
           </div>
         </Reveal>
 

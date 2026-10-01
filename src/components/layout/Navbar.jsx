@@ -104,7 +104,7 @@ function Navbar({ onOpenCommandPalette }) {
                 </motion.span>
               </AnimatePresence>
             </button>
-            <a href={`${import.meta.env.BASE_URL}resume.pdf`} download className="ml-2 inline-flex min-h-11 items-center gap-2 rounded-xl bg-gradient-to-r from-primary to-secondary px-4 py-2 text-xs font-semibold text-white shadow-lg shadow-primary/20 transition-transform hover:-translate-y-0.5"><FiDownload aria-hidden="true" />Resume</a>
+            <a href={`${import.meta.env.BASE_URL}resume.pdf`} target="_blank" rel="noopener noreferrer" className="ml-2 inline-flex min-h-11 items-center gap-2 rounded-xl bg-gradient-to-r from-primary to-secondary px-4 py-2 text-xs font-semibold text-white shadow-lg shadow-primary/20 transition-transform hover:-translate-y-0.5"><FiDownload aria-hidden="true" />View Resume</a>
           </div>
 
           <button type="button" className="inline-flex h-11 w-11 items-center justify-center rounded-xl text-text md:hidden" onClick={() => setMenuOpen((open) => !open)} aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'} aria-expanded={menuOpen} aria-controls="mobile-navigation">
@@ -130,7 +130,7 @@ function Navbar({ onOpenCommandPalette }) {
               </div>
               <div className="flex items-center justify-between border-t border-border pt-6">
                 <button type="button" onClick={toggleTheme} className="inline-flex items-center gap-2 text-sm text-muted" aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}><ThemeIcon aria-hidden="true" /> {theme === 'dark' ? 'Light mode' : 'Dark mode'}</button>
-                <a href={`${import.meta.env.BASE_URL}resume.pdf`} download className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-primary to-secondary px-4 py-2.5 text-sm font-semibold text-white"><FiDownload aria-hidden="true" />Resume</a>
+                <a href={`${import.meta.env.BASE_URL}resume.pdf`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-primary to-secondary px-4 py-2.5 text-sm font-semibold text-white"><FiDownload aria-hidden="true" />View Resume</a>
               </div>
             </motion.aside>
           </motion.div>

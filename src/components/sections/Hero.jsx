@@ -88,7 +88,7 @@ function Hero() {
           <Reveal delay={0.41}>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button magnetic href="#projects" onClick={(event) => scrollToSection(event, 'projects')} size="lg">View My Work</Button>
-              <Button magnetic as="a" href={`${import.meta.env.BASE_URL}resume.pdf`} download variant="secondary" size="lg" icon={<FiDownload aria-hidden="true" />}>Download Resume</Button>
+              <Button magnetic as="a" href={`${import.meta.env.BASE_URL}resume.pdf`} target="_blank" rel="noopener noreferrer" variant="secondary" size="lg" icon={<FiDownload aria-hidden="true" />}>View Resume</Button>
               <Button magnetic href="#contact" onClick={(event) => scrollToSection(event, 'contact')} variant="ghost" size="lg">Let's Talk</Button>
             </div>
           </Reveal>
