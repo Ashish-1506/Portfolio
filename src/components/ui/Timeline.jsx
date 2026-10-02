@@ -51,6 +51,7 @@ function TimelineEntry({ entry, index, reduceMotion }) {
               {entry.tech.filter((technology) => technology !== 'TODO').map((technology) => <Chip key={technology}>{technology}</Chip>)}
             </div>}
             {entry.certificates && <div className="mt-6 flex flex-wrap gap-2">
+              {isUsableLink(entry.certificates.research) && <a href={entry.certificates.research} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-border px-3 py-2 text-xs text-muted transition-colors hover:border-primary hover:text-text"><FiExternalLink aria-hidden="true" />Research Internship Certificate</a>}
               {isUsableLink(entry.certificates.completion) && <a href={entry.certificates.completion} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-border px-3 py-2 text-xs text-muted transition-colors hover:border-primary hover:text-text"><FiExternalLink aria-hidden="true" />Completion Certificate</a>}
               {isUsableLink(entry.certificates.appreciation) && <a href={entry.certificates.appreciation} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-border px-3 py-2 text-xs text-muted transition-colors hover:border-primary hover:text-text"><FiExternalLink aria-hidden="true" />Appreciation Certificate</a>}
             </div>}

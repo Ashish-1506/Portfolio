@@ -12,6 +12,9 @@ const experience = [
       'Published research in Frontiers in Artificial Intelligence.',
     ],
     tech: ['Python', 'PyTorch', 'Deep Learning', 'Biomedical Image Segmentation'],
+    certificates: {
+      research: 'https://drive.google.com/file/d/1cu3LzoklDR7wQnLLmTWzsEq1jj9b47Q/view',
+    },
   },
   {
     role: 'Web Developer Intern',
