@@ -5,7 +5,6 @@
 **Full-stack development · Backend engineering · AI/ML applications · Biomedical AI research**
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20Site-6366F1?style=for-the-badge&logo=githubpages&logoColor=white)](https://Ashish-1506.github.io/Portfolio/)
-[![Deploy](https://github.com/Ashish-1506/Portfolio/actions/workflows/deploy.yml/badge.svg)](https://github.com/Ashish-1506/Portfolio/actions/workflows/deploy.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-22D3EE.svg)](LICENSE)
 
 ![React](https://img.shields.io/badge/React_18-20232A?logo=react&logoColor=61DAFB)
