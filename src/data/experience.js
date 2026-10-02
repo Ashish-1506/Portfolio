@@ -13,7 +13,7 @@ const experience = [
     ],
     tech: ['Python', 'PyTorch', 'Deep Learning', 'Biomedical Image Segmentation'],
     certificates: {
-      research: 'https://drive.google.com/file/d/1cu3LzoklDR7wQnLLmTWzsEq1jj9b47Q/view',
+      research: 'https://drive.google.com/file/d/1cu3L-zoklDR7wQnLLmTWzsEq1jj9b47Q/view',
     },
   },
   {
